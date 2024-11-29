@@ -1,0 +1,187 @@
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    background-color: #d3d3d3;
+    height: 100vh;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #00008b;
+    margin-bottom: 20px;
+    width: 1000px;
+}
+
+.highlight {
+    color: #6a5acd;
+}
+
+.leaderboard-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 10px;
+    width: 80%;
+}
+
+.leaderboard-item {
+    display: flex; /* Use flexbox for better alignment */
+    align-items: center; /* Vertically align items */
+    justify-content: space-between; /* Distribute space between elements */
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    height: 60px; /* Smaller height */
+}
+
+.leaderboard-item.answered {
+    background-color: #add8e6;
+}
+
+.leaderboard-item.unanswered {
+    background-color: #fff;
+}
+
+.rank {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #00008b;
+    margin-right: 10px; /* Add spacing between rank and logo */
+}
+
+.team-logo {
+    width: auto; /* Increase size */
+    height: 50px; /* Increase size to match */
+    object-fit: contain; /* Maintain aspect ratio */
+    margin: 0 5px; /* Minimal margin for spacing */
+    padding: 0; /* Remove extra padding */
+}
+
+
+.player-name {
+    flex: 1; /* Take up remaining space */
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.player-stat {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #00008b;
+    margin-left: 10px; /* Add spacing to separate from player name */
+}
+
+
+.input-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #00008b;
+    border-radius: 5px;
+    outline: none;
+    margin-right: 10px;
+    flex-grow: 1;
+    max-width: 300px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #00008b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #6a5acd;
+}
+
+.tracker-container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column; /* Stack tracker and buttons */
+    align-items: center; /* Center-align the tracker and buttons */
+    gap: 10px; /* Add spacing between items */
+}
+
+.incorrect-tracker {
+    color: red;
+    font-size: 1.5rem;
+}
+
+.reveal-button,
+.new-game-button {
+    background-color: #ff6347;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.reveal-button:hover,
+.new-game-button:hover {
+    background-color: #e5533d;
+}
+
+.new-game-button {
+    margin-top: 10px;
+    background-color: #4682b4;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.new-game-button:hover {
+    background-color: #356994;
+}
+
+.new-game-button:disabled {
+    background-color: #7f9dbf;
+    cursor: not-allowed;
+}
+
+@media screen and (max-width: 768px) {
+    .leaderboard-container {
+        grid-template-columns: 1fr; /* Single column for smaller screens */
+    }
+
+    .game-container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    button {
+        font-size: 0.9rem;
+    }
+
+    input {
+        font-size: 0.9rem;
+    }
+}

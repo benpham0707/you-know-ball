@@ -1,0 +1,45 @@
+.homepage-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #d3d3d3;
+    text-align: center;
+  }
+  
+  .homepage-container h1 {
+    font-size:6rem; /* Ensures the heading is large */
+    color: #00008b;
+    margin-bottom: 10px; /* Reduces spacing below the heading */
+  }
+  
+  .homepage-container h3 {
+    font-size: 2rem;
+    color: #6a5acd;
+    margin: 0; /* Removes default margins for consistency */
+  }
+  
+  .homepage-image {
+    width: 600px; /* Ensures the image fits well in the layout */
+    height: auto;
+    margin-top: 20px;
+    border-radius: 10px; /* Adds rounded corners to the image */
+  }
+  
+  .start-button {
+    background-color: #1e90ff;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease; /* Adds a smooth hover effect */
+  }
+  
+  .start-button:hover {
+    background-color: #00008b; /* Changes button color on hover */
+  }
+  
