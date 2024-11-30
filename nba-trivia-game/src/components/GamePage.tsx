@@ -79,15 +79,24 @@ interface LeaderboardEntry {
   team: string;
 }
 
+interface Player {
+    id: number;
+    name: string;
+    team: string;
+  }
+
 const GamePage = () => {
   const [answers, setAnswers] = useState<LeaderboardEntry[]>([]);
   const [revealedAnswers, setRevealedAnswers] = useState<boolean[]>([]);
   const [userAnswer, setUserAnswer] = useState('');
   const [incorrectAnswers, setIncorrectAnswers] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isGameWon, setIsGameWon] = useState(false);
   const [stat, setStat] = useState('');
   const [season, setSeason] = useState('');
   const [loading, setLoading] = useState(false);
+  const [players, setPlayers] = useState<Player[]>([]); // Store all player data
+  const [filteredPlayers, setFilteredPlayers] = useState<Player[]>([]); 
 
   // Define team logo map
   const teamLogoMap: Record<string, { start: number; end: number; logo: string }[]> = {
@@ -163,10 +172,10 @@ const GamePage = () => {
       { start: 2017, end: 2023, logo: minnesotaTimberwolves2017 },
     ],
     NOK: [
-        { start: 2002, end: 2008, logo: newOrleansHornets2002 },
+        { start: 2002, end: 2007, logo: newOrleansHornets2002 },
       ],
     NOH: [
-        { start: 2008, end: 2013, logo: newOrleansPelicans2008 },
+        { start: 2007, end: 2013, logo: newOrleansPelicans2008 },
       ],
     NOP: [
       { start: 2013, end: 2023, logo: newOrleansPelicansLogo },
@@ -227,6 +236,13 @@ const GamePage = () => {
     return logoInfo ? logoInfo.logo : ''; // Return the correct logo path or empty string
   };
 
+  useEffect(() => {
+    fetch('http://localhost:5001/api/players')
+      .then((res) => res.json())
+      .then((data) => setPlayers(data))
+      .catch((error) => console.error('Error fetching players:', error));
+  }, []);
+
   // Fetch new game data
   const fetchNewGameData = () => {
     setLoading(true);
@@ -241,6 +257,8 @@ const GamePage = () => {
         setIncorrectAnswers(0);
         setIsGameOver(false);
         setLoading(false);
+        setIsGameWon(false);
+        setFilteredPlayers([]); // Clear recommendations
       })
       .catch((error) => {
         console.error('Error fetching new game data:', error);
@@ -252,28 +270,63 @@ const GamePage = () => {
     fetchNewGameData();
   }, []);
 
-  const handleSubmit = () => {
-    if (isGameOver) return;
+  useEffect(() => {
+    if (!isGameOver && revealedAnswers.every((revealed) => revealed)) {
+      setIsGameWon(true); // Mark the game as won
+    }
+  }, [revealedAnswers, isGameOver]);
 
+
+  const handleInputChange = (value: string) => {
+    setUserAnswer(value);
+  
+    if (value.trim() === '') {
+      setFilteredPlayers([]); // Clear recommendations if input is empty
+    } else {
+      // Filter players whose names include the input text
+      const filtered = players.filter((player) =>
+        player.name.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredPlayers(filtered.slice(0, 5)); // Limit to top 5 matches
+    }
+  };
+
+  const handleRecommendationClick = (name: string) => {
+    setUserAnswer(name); // Autofill the input field
+    setFilteredPlayers([]); // Clear recommendations
+  };
+
+  const handleSubmit = () => {
+    if (isGameOver || isGameWon) return;
+  
     const foundIndex = answers.findIndex(
       (answer) => answer.name.toLowerCase() === userAnswer.toLowerCase()
     );
-
+  
     if (foundIndex !== -1 && !revealedAnswers[foundIndex]) {
+      // Correct answer
       const updatedRevealedAnswers = [...revealedAnswers];
       updatedRevealedAnswers[foundIndex] = true;
       setRevealedAnswers(updatedRevealedAnswers);
+  
+      // Check if the game is won after revealing this answer
+      if (updatedRevealedAnswers.every((revealed) => revealed)) {
+        setIsGameWon(true);
+      }
     } else {
+      // Incorrect answer
       setIncorrectAnswers((prev) => {
         const newCount = prev + 1;
         if (newCount >= 3) {
-          setIsGameOver(true);
+          setIsGameOver(true); // End the game on 3 strikes
         }
         return newCount;
       });
     }
     setUserAnswer('');
+    setFilteredPlayers([]);
   };
+  
 
   const handleRevealAnswers = () => {
     setRevealedAnswers(Array(answers.length).fill(true));
@@ -311,34 +364,63 @@ const GamePage = () => {
         ))}
       </div>
       <div className="input-container">
-        <input
-          type="text"
-          placeholder={isGameOver ? 'Game Over' : 'Enter player name'}
-          value={userAnswer}
-          onChange={(e) => setUserAnswer(e.target.value)}
-          disabled={loading}
-        />
-        <button onClick={handleSubmit} disabled={isGameOver || loading}>
-          Submit
-        </button>
-      </div>
-      <div className="tracker-container">
-        <span className="incorrect-tracker">
-          Incorrect Answers: {incorrectAnswers}/3
-        </span>
-        {isGameOver && (
-          <button className="reveal-button" onClick={handleRevealAnswers}>
-            Reveal Answers
-          </button>
-        )}
-        <button
-          className="new-game-button"
-          onClick={fetchNewGameData}
-          disabled={loading}
-        >
-          {loading ? 'Loading...' : 'New Game'}
-        </button>
-      </div>
+  <div style={{ flex: 1, position: 'relative' }}>
+    <input
+      type="text"
+      placeholder={isGameOver ? 'Game Over' : 'Enter player name'}
+      value={userAnswer}
+      onChange={(e) => handleInputChange(e.target.value)}
+      disabled={loading || isGameOver || isGameWon}
+      style={{ width: '100%' }}
+    />
+    {filteredPlayers.length > 0 && (
+      <ul className="recommendation-list">
+        {filteredPlayers.map((player) => (
+          <li
+            key={player.id}
+            onClick={() => {
+              setUserAnswer(player.name); // Autofill input
+              setFilteredPlayers([]); // Clear recommendations
+            }}
+          >
+            {player.name}
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+  <button
+    onClick={handleSubmit}
+    disabled={isGameOver || loading}
+    style={{ marginLeft: '15px' }} // Add margin between input and button
+  >
+    Submit
+  </button>
+</div>
+
+
+
+<div className="tracker-container">
+  <span className="incorrect-tracker">
+    Incorrect Answers: {incorrectAnswers}/3
+  </span>
+  {isGameOver && !isGameWon && (
+    <button className="reveal-button" onClick={handleRevealAnswers}>
+      Reveal Answers
+    </button>
+  )}
+  {isGameWon && !isGameOver && (
+    <span className="win-message">🎉 You Win! 🎉</span>
+  )}
+  <button
+    className="new-game-button"
+    onClick={fetchNewGameData}
+    disabled={loading}
+  >
+    {loading ? 'Loading...' : 'New Game'}
+  </button>
+</div>
+
     </div>
   );
 }

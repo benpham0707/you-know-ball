@@ -94,6 +94,30 @@ app.get('/api/league-leaders', async (req, res) => {
   }
 });
 
+// New endpoint to fetch all players (for recommendation feature)
+app.get('/api/players', async (req, res) => {
+  try {
+    const url = `https://stats.nba.com/stats/commonallplayers?LeagueID=00&Season=2023-24&IsOnlyCurrentSeason=0`;
+    const response = await axios.get(url, {
+      headers: {
+        Referer: 'https://www.nba.com',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+      },
+    });
+
+    const players = response.data.resultSets[0].rowSet.map((player) => ({
+      id: player[0], // PLAYER_ID
+      name: player[2], // PLAYER_NAME
+      team: player[3], // TEAM_ABBREVIATION
+    }));
+
+    res.json(players);
+  } catch (error) {
+    console.error('Error fetching player data:', error.message);
+    res.status(500).json({ error: 'Failed to fetch player data' });
+  }
+});
+
 // Endpoint to reset the current season and stat (optional)
 app.post('/api/reset', (req, res) => {
   currentStat = stats[Math.floor(Math.random() * stats.length)];
