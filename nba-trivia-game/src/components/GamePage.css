@@ -12,13 +12,13 @@
 h1 {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #00008b;
+    color: #6495ED;
     margin-bottom: 20px;
     width: 1000px;
 }
 
 .highlight {
-    color: #6a5acd;
+    color: #00008b;
 }
 
 .leaderboard-container {
@@ -193,6 +193,29 @@ button:hover {
   .recommendation-list li:hover {
     background-color: #f0f0f0;
   }
+
+  .back-to-home {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+  
+  .back-button {
+    text-decoration: none;
+    color: white;
+    background-color: #007bff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  .back-button:hover {
+    background-color: #0056b3;
+  }
+  
   
   
   
