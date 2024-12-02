@@ -4,15 +4,14 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-app.use(cors({
-    origin: [
-      'https://you-know-ball.vercel.app/', // Replace with your deployed frontend URL
-      'http://localhost:5173' // For local development
-    ],
-    methods: ['GET', 'POST'],
-    credentials: true,
-  }));
+const cors = require('cors');
+app.use(
+    cors({
+      origin: 'https://you-know-ball.vercel.app', // Allow requests from your frontend
+    })
+  );
   
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -133,6 +132,5 @@ app.post('/api/reset', (req, res) => {
 });
 
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, '0.0.0.0', () =>
-  console.log(`Backend running on http://0.0.0.0:${PORT}`)
-);
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+
