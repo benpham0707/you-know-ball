@@ -23,22 +23,22 @@ h1 {
 
 .leaderboard-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    grid-template-columns: repeat(2, 1fr); 
     gap: 10px;
     width: 80%;
 }
 
 .leaderboard-item {
-    display: flex; /* Use flexbox for better alignment */
-    align-items: center; /* Vertically align items */
-    justify-content: space-between; /* Distribute space between elements */
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
     padding: 10px 20px;
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     font-size: 1rem;
     transition: all 0.3s ease;
-    height: 60px; /* Smaller height */
+    height: 60px; 
 }
 
 .leaderboard-item.answered {
@@ -53,20 +53,20 @@ h1 {
     font-size: 1.5rem;
     font-weight: bold;
     color: #00008b;
-    margin-right: 10px; /* Add spacing between rank and logo */
+    margin-right: 10px; 
 }
 
 .team-logo {
-    width: auto; /* Increase size */
-    height: 50px; /* Increase size to match */
-    object-fit: contain; /* Maintain aspect ratio */
-    margin: 0 5px; /* Minimal margin for spacing */
-    padding: 0; /* Remove extra padding */
+    width: auto; 
+    height: 50px; 
+    object-fit: contain; 
+    margin: 0 5px; 
+    padding: 0; 
 }
 
 
 .player-name {
-    flex: 1; /* Take up remaining space */
+    flex: 1; 
     text-align: center;
     font-size: 1.5rem;
     font-weight: bold;
@@ -77,7 +77,7 @@ h1 {
     font-size: 1.2rem;
     font-weight: bold;
     color: #00008b;
-    margin-left: 10px; /* Add spacing to separate from player name */
+    margin-left: 10px; 
 }
   
   
@@ -111,9 +111,9 @@ button:hover {
 .tracker-container {
     margin-top: 10px;
     display: flex;
-    flex-direction: column; /* Stack tracker and buttons */
-    align-items: center; /* Center-align the tracker and buttons */
-    gap: 10px; /* Add spacing between items */
+    flex-direction: column; 
+    align-items: center; 
+    gap: 10px; 
 }
 
 .incorrect-tracker {
@@ -161,7 +161,7 @@ button:hover {
 
 .input-container {
     display: flex;
-    gap: 15px; /* Increase space between input and button */
+    gap: 15px; 
     max-width: 500px;
     margin: 0 auto;
     align-items: flex-start;
@@ -215,15 +215,6 @@ button:hover {
   .back-button:hover {
     background-color: #0056b3;
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
 .win-message {
     color: green;
@@ -235,7 +226,7 @@ button:hover {
 
 @media screen and (max-width: 768px) {
     .leaderboard-container {
-        grid-template-columns: 1fr; /* Single column for smaller screens */
+        grid-template-columns: 1fr; 
     }
 
     .game-container {

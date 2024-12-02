@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import './GamePage.css';
 import { Link } from 'react-router-dom';
 
-
-// Corrected team logo imports
 import atlantaHawks2007 from '../team-logos/Atlanta Hawks 2007.png';
 import atlantaHawks2020 from '../team-logos/Atlanta Hawks 2020.png';
 import atlantaHawks2000_2007 from '../team-logos/Atlanta_Hawks_2000_2007.webp';
@@ -72,8 +70,6 @@ import Lakers from '../team-logos/Los Angeles Lakers 2001.png';
 import MemOld from '../team-logos/Memphis Grizzlies Logo.png';
 import MemNew from '../team-logos/Memphis Grizzlies 2018.png';
 
-
-// Define leaderboard entry interface
 interface LeaderboardEntry {
     rank: number;
     name: string;
@@ -100,7 +96,6 @@ const GamePage = () => {
     const [players, setPlayers] = useState<Player[]>([]); // Store all player data
     const [filteredPlayers, setFilteredPlayers] = useState<Player[]>([]);
 
-    // Define team logo map
     const teamLogoMap: Record<string, { start: number; end: number; logo: string }[]> = {
         ATL: [
             { start: 2000, end: 2007, logo: atlantaHawks2000_2007 },
@@ -227,15 +222,13 @@ const GamePage = () => {
         ],
     };
 
-
-    // Utility function to get the logo path
     const getLogoPath = (team: string, season: string): string => {
         const year = parseInt(season.split('-')[0]);
         const teamLogos = teamLogoMap[team];
-        if (!teamLogos) return ''; // Return empty string if no logos for the team
+        if (!teamLogos) return '';
 
         const logoInfo = teamLogos.find(({ start, end }) => year >= start && year <= end);
-        return logoInfo ? logoInfo.logo : ''; // Return the correct logo path or empty string
+        return logoInfo ? logoInfo.logo : '';
     };
 
     useEffect(() => {
@@ -245,7 +238,6 @@ const GamePage = () => {
             .catch((error) => console.error('Error fetching players:', error));
     }, []);
 
-    // Fetch new game data
     const fetchNewGameData = () => {
         setLoading(true);
         fetch('http://localhost:5001/api/league-leaders')
@@ -260,7 +252,7 @@ const GamePage = () => {
                 setIsGameOver(false);
                 setLoading(false);
                 setIsGameWon(false);
-                setFilteredPlayers([]); // Clear recommendations
+                setFilteredPlayers([]);
             })
             .catch((error) => {
                 console.error('Error fetching new game data:', error);
@@ -274,7 +266,7 @@ const GamePage = () => {
 
     useEffect(() => {
         if (!isGameOver && revealedAnswers.every((revealed) => revealed)) {
-            setIsGameWon(true); // Mark the game as won
+            setIsGameWon(true);
         }
     }, [revealedAnswers, isGameOver]);
 
@@ -283,13 +275,12 @@ const GamePage = () => {
         setUserAnswer(value);
 
         if (value.trim() === '') {
-            setFilteredPlayers([]); // Clear recommendations if input is empty
+            setFilteredPlayers([]);
         } else {
-            // Filter players whose names include the input text
             const filtered = players.filter((player) =>
                 player.name.toLowerCase().includes(value.toLowerCase())
             );
-            setFilteredPlayers(filtered.slice(0, 5)); // Limit to top 5 matches
+            setFilteredPlayers(filtered.slice(0, 5));
         }
     };
 
@@ -302,21 +293,18 @@ const GamePage = () => {
         );
 
         if (foundIndex !== -1 && !revealedAnswers[foundIndex]) {
-            // Correct answer
             const updatedRevealedAnswers = [...revealedAnswers];
             updatedRevealedAnswers[foundIndex] = true;
             setRevealedAnswers(updatedRevealedAnswers);
 
-            // Check if the game is won after revealing this answer
             if (updatedRevealedAnswers.every((revealed) => revealed)) {
                 setIsGameWon(true);
             }
         } else {
-            // Incorrect answer
             setIncorrectAnswers((prev) => {
                 const newCount = prev + 1;
                 if (newCount >= 3) {
-                    setIsGameOver(true); // End the game on 3 strikes
+                    setIsGameOver(true);
                 }
                 return newCount;
             });
@@ -349,7 +337,7 @@ const GamePage = () => {
                         <div className="leaderboard-left">
                             <span className="rank">{index + 1}.</span>
                             <img
-                                src={getLogoPath(answer.team, season)} // Always show logo
+                                src={getLogoPath(answer.team, season)}
                                 alt={`${answer.team} logo`}
                                 className="team-logo"
                             />
@@ -379,8 +367,8 @@ const GamePage = () => {
                                 <li
                                     key={player.id}
                                     onClick={() => {
-                                        setUserAnswer(player.name); // Autofill input
-                                        setFilteredPlayers([]); // Clear recommendations
+                                        setUserAnswer(player.name);
+                                        setFilteredPlayers([]);
                                     }}
                                 >
                                     {player.name}
@@ -392,14 +380,11 @@ const GamePage = () => {
                 <button
                     onClick={handleSubmit}
                     disabled={isGameOver || loading}
-                    style={{ marginLeft: '15px' }} // Add margin between input and button
+                    style={{ marginLeft: '15px' }}
                 >
                     Submit
                 </button>
             </div>
-
-
-
             <div className="tracker-container">
                 <span className="incorrect-tracker">
                     Incorrect Answers: {incorrectAnswers}/3
@@ -420,10 +405,7 @@ const GamePage = () => {
                     {loading ? 'Loading...' : 'New Game'}
                 </button>
             </div>
-
         </div>
     );
 }
-
-
 export default GamePage;

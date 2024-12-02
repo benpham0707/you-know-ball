@@ -1,9 +1,7 @@
 import axios from "axios";
 
-// Define the base URL for your API
 const API_BASE_URL = "http://localhost:5001/api";
 
-// Define the types for the responses (optional but recommended)
 export type RandomSeasonStatResponse = {
   season: string;
   stat: string;
@@ -16,7 +14,6 @@ export type Player = {
   stat: number;
 };
 
-// Fetch a random season and stat
 export const fetchRandomSeasonStat = async (): Promise<RandomSeasonStatResponse> => {
   try {
     const response = await axios.get<RandomSeasonStatResponse>(`${API_BASE_URL}/random-season-stat`);
@@ -27,7 +24,6 @@ export const fetchRandomSeasonStat = async (): Promise<RandomSeasonStatResponse>
   }
 };
 
-// Fetch league leaders for a given season and stat
 export const fetchLeagueLeaders = async (season: string, stat: string): Promise<Player[]> => {
   try {
     const response = await axios.get<Player[]>(`${API_BASE_URL}/league-leaders`, {

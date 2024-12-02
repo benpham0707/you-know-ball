@@ -9,22 +9,22 @@
   }
   
   .homepage-container h1 {
-    font-size:6rem; /* Ensures the heading is large */
+    font-size:6rem; 
     color: #00008b;
-    margin-bottom: 10px; /* Reduces spacing below the heading */
+    margin-bottom: 10px; 
   }
   
   .homepage-container h3 {
     font-size: 2rem;
     color: #6a5acd;
-    margin: 0; /* Removes default margins for consistency */
+    margin: 0; 
   }
   
   .homepage-image {
-    width: 600px; /* Ensures the image fits well in the layout */
+    width: 600px; 
     height: auto;
     margin-top: 20px;
-    border-radius: 10px; /* Adds rounded corners to the image */
+    border-radius: 10px; 
   }
   
   .start-button {
@@ -36,10 +36,10 @@
     border-radius: 5px;
     cursor: pointer;
     margin-top: 20px;
-    transition: background-color 0.3s ease; /* Adds a smooth hover effect */
+    transition: background-color 0.3s ease; 
   }
   
   .start-button:hover {
-    background-color: #00008b; /* Changes button color on hover */
+    background-color: #00008b; 
   }
   

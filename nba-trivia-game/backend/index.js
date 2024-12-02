@@ -6,22 +6,20 @@ const path = require('path');
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from the "public" folder
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Define the stats and seasons arrays
 const stats = ['PTS', 'REB', 'AST', 'STL', 'BLK', 'FG3M'];
 const seasons = Array.from({ length: 19 }, (_, i) => `${2005 + i}-${2006 + i}`);
 
-// Randomly pick a season and stat
 let currentStat = stats[Math.floor(Math.random() * stats.length)];
 let currentSeason = seasons[Math.floor(Math.random() * seasons.length)];
 
-// Endpoint to fetch random season and stat
+// get a random season and a random stat from the choices
 app.get('/api/random-season-stat', (req, res) => {
   res.json({ season: currentSeason, stat: currentStat });
 });
 
-// Endpoint to fetch league leaders for a random season and stat
+// get the top ten league leaders of a certain stat endpoint
 app.get('/api/league-leaders', async (req, res) => {
   const currentStat = stats[Math.floor(Math.random() * stats.length)];
   const currentSeason = seasons[Math.floor(Math.random() * seasons.length)];
@@ -94,7 +92,7 @@ app.get('/api/league-leaders', async (req, res) => {
   }
 });
 
-// New endpoint to fetch all players (for recommendation feature)
+// fetch all players endpoint
 app.get('/api/players', async (req, res) => {
   try {
     const url = `https://stats.nba.com/stats/commonallplayers?LeagueID=00&Season=2023-24&IsOnlyCurrentSeason=0`;
@@ -106,9 +104,9 @@ app.get('/api/players', async (req, res) => {
     });
 
     const players = response.data.resultSets[0].rowSet.map((player) => ({
-      id: player[0], // PLAYER_ID
-      name: player[2], // PLAYER_NAME
-      team: player[3], // TEAM_ABBREVIATION
+      id: player[0], 
+      name: player[2], 
+      team: player[3], 
     }));
 
     res.json(players);
@@ -118,7 +116,7 @@ app.get('/api/players', async (req, res) => {
   }
 });
 
-// Endpoint to reset the current season and stat (optional)
+// endpoint to reset the current season and stat
 app.post('/api/reset', (req, res) => {
   currentStat = stats[Math.floor(Math.random() * stats.length)];
   currentSeason = seasons[Math.floor(Math.random() * seasons.length)];
@@ -126,6 +124,5 @@ app.post('/api/reset', (req, res) => {
   res.json({ message: 'Season and stat reset', season: currentSeason, stat: currentStat });
 });
 
-// Start the server
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Backend running on http://localhost:${PORT}`));
