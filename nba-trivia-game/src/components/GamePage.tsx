@@ -232,7 +232,7 @@ const GamePage = () => {
     };
 
     useEffect(() => {
-        fetch('https://you-know-ball.onrender.com/api/players')
+        fetch('http://localhost:5001/api/players')
             .then((res) => res.json())
             .then((data) => setPlayers(data))
             .catch((error) => console.error('Error fetching players:', error));
@@ -240,7 +240,7 @@ const GamePage = () => {
 
     const fetchNewGameData = () => {
         setLoading(true);
-        fetch('https://you-know-ball.onrender.com/api/league-leaders')
+        fetch('http://localhost:5001/api/league-leaders')
             .then((response) => response.json())
             .then((data) => {
                 setAnswers(data.leaderboard);
